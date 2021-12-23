@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onClickbutton3(View v){
         Intent intent = new Intent(this,MyService.class);
-        startService(intent);
+        stopService(intent);
 
     }
 

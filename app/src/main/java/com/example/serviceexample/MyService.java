@@ -7,15 +7,26 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class MyService extends Service {
-    MediaPlayer mediaPlyer;
+    MediaPlayer mediaPlyer = null;
     public MyService() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mediaPlyer = MediaPlayer.create(this,R.raw.music1);
-        mediaPlyer.start();
-        return super.onStartCommand(intent, flags, startId);
+        if(mediaPlyer != null) {
+            mediaPlyer.release();
+        }
+        if(intent.getAction().equals("music1")) {
+            mediaPlyer = MediaPlayer.create(this, R.raw.music1);
+            mediaPlyer.start();
+        }
+        else if(intent.getAction().equals("music2")) {
+            mediaPlyer = MediaPlayer.create(this, R.raw.music2);
+            mediaPlyer.start();
+        }
+            return super.onStartCommand(intent, flags, startId);
+
+
     }
 
     @Override
@@ -25,6 +36,10 @@ public class MyService extends Service {
 
     @Override
     public void onDestroy() {
+        if(mediaPlyer != null) {
+            mediaPlyer.release();
+        }
+        mediaPlyer = null;
         super.onDestroy();
     }
 
